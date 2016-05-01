@@ -111,6 +111,42 @@ class IntervalTree
 
 
     ###*
+    returns an interval with the given id, or undefined if none exists
+
+    @method get
+    @public
+    @param {Number|String} id id of the interval to remove
+    @return {Interval} interval with given id, or undefined
+    ###
+    get: (id) ->
+
+        return @intervalsById[id]
+
+
+
+    ###*
+    removes an interval of the given id
+
+    @method remove
+    @public
+    @param {Number|String} id id of the interval to remove
+    ###
+    remove: (id) ->
+
+        interval = @intervalsById[id]
+
+        return if not interval?
+
+        node = @nodesById[id]
+
+        node.remove(interval)
+
+        delete @nodesById[id]
+        delete @intervalsById[id]
+
+
+
+    ###*
     search intervals
     when only one argument is given, return intervals which contains the value
     when two arguments are given, ...
@@ -135,27 +171,6 @@ class IntervalTree
             Util.assertOrder val1, val2, '1st argument', '2nd argument', 'IntervalTree#search()'
 
             return @rangeSearch val1, val2
-
-
-    ###*
-    removes an interval of the given id
-
-    @method remove
-    @public
-    @param {Number|String} id id of the interval to remove
-    ###
-    remove: (id) ->
-
-        interval = @intervalsById[id]
-
-        return if not interval?
-
-        node = @nodesById[id]
-
-        node.remove(interval)
-
-        delete @nodesById[id]
-        delete @intervalsById[id]
 
 
 
